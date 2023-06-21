@@ -112,6 +112,7 @@ Segue o exemplo no postman
 
 ![Alt text](image.png)
 
-Na raiz do projeto existe um arquivo api-pastelaria.postman_collection.json para ser importado no postman com todas as rotas
+Documentação da api em:
+http://localhost:8989/swagger/index.html
 
-Obs: na rota post e put de products utilizar form em vez de json pois a api faz envio de arquivo.
+ou pelo postman com o json api-pastelaria.postman_collection.json na raiz

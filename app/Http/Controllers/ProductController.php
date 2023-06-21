@@ -14,9 +14,39 @@ class ProductController extends Controller
     {
         $this->service = $service;
     }
+
     /**
-     * Display a listing of the resource.
-     */
+     * 
+     * Busca todos os produtos cadastrados.
+     * 
+     *@OA\Get(
+     *   path="/api/product",
+     *   tags={"Listagem de Produtos"},
+     *   security={ {"bearerAuth": {}} },
+     *   @OA\Response(
+     *     response=200,
+     *     description="Response Successful",
+     *     @OA\MediaType(
+     *       mediaType="application/json",
+     *       @OA\Schema(
+     *         @OA\Property(property="status",type="string",example="true"),
+     *         @OA\Property(property="message",type="string",example="Successfully"),
+     *         @OA\Property(
+     *          property="products",
+     *          type="array", 
+     *            @OA\Items(
+     *              type="object",
+     *              @OA\Property(property="id",type="integer",example="1"),
+     *              @OA\Property(property="name",type="string",example="Pastel de Carne"),
+     *              @OA\Property(property="price",type="decimal",example="12.50"),
+     *              @OA\Property(property="photo",type="string",example="https://via.placeholder.com/640x480.png/00ffaa?text=pasty+magnam")
+     *            )
+     *          )
+     *        )
+     *      )
+     *    )
+     * )
+    **/
     public function index()
     {
         try {
@@ -56,8 +86,35 @@ class ProductController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
+     * 
+     * Busca produto pela id.
+     * 
+     *@OA\Get(
+     *   path="/api/product/{id}",
+     *   tags={"Listagem de Produtos"},
+     *   @OA\Parameter(name="id", in="path",required=true, @OA\Schema(type="integer")),
+     *   security={ {"bearerAuth": {}} },
+     *   @OA\Response(
+     *     response=200,
+     *     description="Response Successful",
+     *     @OA\MediaType(
+     *       mediaType="application/json",
+     *       @OA\Schema(
+     *         @OA\Property(property="status",type="string",example="true"),
+     *         @OA\Property(property="message",type="string",example="Successfully"),
+     *         @OA\Property(
+     *          property="product",
+     *          type="object", 
+     *              @OA\Property(property="id",type="integer",example="1"),
+     *              @OA\Property(property="name",type="string",example="Pastel de Carne"),
+     *              @OA\Property(property="price",type="decimal",example="12.50"),
+     *              @OA\Property(property="photo",type="string",example="https://via.placeholder.com/640x480.png/00ffaa?text=pasty+magnam")* 
+     *          )
+     *        )
+     *      )
+     *    )
+     * )
+    **/
     public function show(Product $product)
     {
         try {
