@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Client;
 use App\Services\ClientService;
 use App\Http\Requests\StoreCreateClient;
@@ -9,10 +10,10 @@ use DB;
 
 class ClientController extends Controller
 {
-    public function __construct(ClientService $service)
+    public function __construct(protected ClientService $service)
     {
-        $this->service = $service;
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -21,7 +22,7 @@ class ClientController extends Controller
         try {
             $clients = $this->service->listClients();
         } catch(Exception $e) {
-            return response()->json($e->getMessage(),500);
+            return response()->json($e->getMessage(), 500);
         }
 
         return response()->json([
@@ -42,7 +43,7 @@ class ClientController extends Controller
             $client = $this->service->createClient($request->all());
         } catch(Exception $e) {
             DB::rollback();
-            return response()->json($e->getMessage(),500);
+            return response()->json($e->getMessage(), 500);
         }
 
         DB::commit();
@@ -62,7 +63,7 @@ class ClientController extends Controller
         try {
             $client = $this->service->clientForId($client->id);
         } catch(Exception $e) {
-            return response()->json($e->getMessage(),500);
+            return response()->json($e->getMessage(), 500);
         }
 
         return response()->json([
@@ -83,7 +84,7 @@ class ClientController extends Controller
             $client = $this->service->updateClient($client->id, $request->all());
         } catch(Exception $e) {
             DB::rollback();
-            return response()->json($e->getMessage(),500);
+            return response()->json($e->getMessage(), 500);
         }
 
         DB::commit();
@@ -106,7 +107,7 @@ class ClientController extends Controller
             $client = $this->service->removeClient($client->id);
         } catch(Exception $e) {
             DB::rollback();
-            return response()->json($e->getMessage()->message(),500);
+            return response()->json($e->getMessage()->message(), 500);
         }
 
         DB::commit();

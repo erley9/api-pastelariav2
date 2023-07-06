@@ -1,16 +1,15 @@
 <?php
+
 namespace App\Services;
 
 use App\Repositories\OrderRepository;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\File;
 
-
 class OrderService
 {
-    public function __construct(OrderRepository $orderRepository)
+    public function __construct(protected OrderRepository $repository)
     {
-        $this->repository = $orderRepository;
     }
 
     public function listOrders()
@@ -41,15 +40,16 @@ class OrderService
         return $this->repository->saveOrder($request);
     }
 
-    public function removeOrder($clientId) {
-        
+    public function removeOrder($clientId)
+    {
+
         if (!count($this->repository->getOrderTodayClient($clientId))) {
             return response()->json([
                 'status' => true,
                 'message' => 'There is no order from this client today to be canceled',
             ], 401);
         }
-        
+
         $this->repository->deleteOrder($clientId);
 
         return response()->json([
@@ -58,7 +58,8 @@ class OrderService
         ], 200);
     }
 
-    public function updateOrderToday($request) {
+    public function updateOrderToday($request)
+    {
         return $this->repository->updateOrder($request);
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Repositories\ProductRepository;
@@ -7,9 +8,8 @@ use Illuminate\Validation\Rules\File;
 
 class ProductService
 {
-    public function __construct(ProductRepository $productRepository)
+    public function __construct(protected ProductRepository $repository)
     {
-        $this->repository = $productRepository;
     }
 
     public function uploadPhoto($request)
@@ -23,7 +23,7 @@ class ProductService
     public function deleteOldPhoto($productId)
     {
         $product = $this->repository->getProduct($productId);
-        $photo = str_replace(url("/photos"),'',$product->photo);
+        $photo = str_replace(url("/photos"), '', $product->photo);
         $filename = public_path("/photos").$photo;
         if (file_exists($filename)) {
             unlink($filename);
@@ -106,7 +106,8 @@ class ProductService
         return $this->repository->getById($productId);
     }
 
-    public function removeProduct($productId) {
+    public function removeProduct($productId)
+    {
         $this->repository->deleteProduct($productId);
     }
 }

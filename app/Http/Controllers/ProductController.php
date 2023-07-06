@@ -4,21 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
-use App\Http\Requests\StoreCreateUpdateProduct;
 use App\Services\ProductService;
-use DB;
+use Illuminate\Support\Facades\DB;
+use Exception;
 
 class ProductController extends Controller
 {
-    public function __construct(ProductService $service)
+    public function __construct(protected ProductService $service)
     {
-        $this->service = $service;
     }
 
     /**
-     * 
+     *
      * Busca todos os produtos cadastrados.
-     * 
+     *
      *@OA\Get(
      *   path="/api/product",
      *   tags={"Listagem de Produtos"},
@@ -33,7 +32,7 @@ class ProductController extends Controller
      *         @OA\Property(property="message",type="string",example="Successfully"),
      *         @OA\Property(
      *          property="products",
-     *          type="array", 
+     *          type="array",
      *            @OA\Items(
      *              type="object",
      *              @OA\Property(property="id",type="integer",example="1"),
@@ -52,7 +51,7 @@ class ProductController extends Controller
         try {
             $products = $this->service->listProducts();
         } catch(Exception $e) {
-            return response()->json($e->getMessage(),500);
+            return response()->json($e->getMessage(), 500);
         }
 
         return response()->json([
@@ -73,7 +72,7 @@ class ProductController extends Controller
             $product = $this->service->createProduct($request);
         } catch(Exception $e) {
             DB::rollback();
-            return response()->json($e->getMessage(),500);
+            return response()->json($e->getMessage(), 500);
         }
 
         DB::commit();
@@ -86,9 +85,9 @@ class ProductController extends Controller
     }
 
     /**
-     * 
+     *
      * Busca produto pela id.
-     * 
+     *
      *@OA\Get(
      *   path="/api/product/{id}",
      *   tags={"Listagem de Produtos"},
@@ -104,11 +103,11 @@ class ProductController extends Controller
      *         @OA\Property(property="message",type="string",example="Successfully"),
      *         @OA\Property(
      *          property="product",
-     *          type="object", 
+     *          type="object",
      *              @OA\Property(property="id",type="integer",example="1"),
      *              @OA\Property(property="name",type="string",example="Pastel de Carne"),
      *              @OA\Property(property="price",type="decimal",example="12.50"),
-     *              @OA\Property(property="photo",type="string",example="https://via.placeholder.com/640x480.png/00ffaa?text=pasty+magnam")* 
+     *              @OA\Property(property="photo",type="string",example="https://via.placeholder.com/640x480.png/00ffaa?text=pasty+magnam")*
      *          )
      *        )
      *      )
@@ -120,7 +119,7 @@ class ProductController extends Controller
         try {
             $product = $this->service->productForId($product->id);
         } catch(Exception $e) {
-            return response()->json($e->getMessage(),500);
+            return response()->json($e->getMessage(), 500);
         }
 
         return response()->json([
@@ -141,7 +140,7 @@ class ProductController extends Controller
             $product = $this->service->updateProduct($product->id, $request);
         } catch(Exception $e) {
             DB::rollback();
-            return response()->json($e->getMessage(),500);
+            return response()->json($e->getMessage(), 500);
         }
 
         DB::commit();
@@ -164,7 +163,7 @@ class ProductController extends Controller
             $product = $this->service->removeProduct($product->id);
         } catch(Exception $e) {
             DB::rollback();
-            return response()->json($e->getMessage()->message(),500);
+            return response()->json($e->getMessage(), 500);
         }
 
         DB::commit();

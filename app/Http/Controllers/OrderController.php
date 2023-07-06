@@ -11,10 +11,8 @@ use DB;
 
 class OrderController extends Controller
 {
-
-    public function __construct(OrderService $service)
+    public function __construct(protected OrderService $service)
     {
-        $this->service = $service;
     }
 
     /**
@@ -25,7 +23,7 @@ class OrderController extends Controller
         try {
             $ordersClients = $this->service->listOrders();
         } catch(Exception $e) {
-            return response()->json($e->getMessage(),500);
+            return response()->json($e->getMessage(), 500);
         }
 
         return response()->json([
@@ -46,7 +44,7 @@ class OrderController extends Controller
             $items = $this->service->createOrder($request);
         } catch(Exception $e) {
             DB::rollback();
-            return response()->json($e->getMessage(),500);
+            return response()->json($e->getMessage(), 500);
         }
 
         DB::commit();
@@ -66,7 +64,7 @@ class OrderController extends Controller
         try {
             $items = $this->service->OrderForId($client->id);
         } catch(Exception $e) {
-            return response()->json($e->getMessage(),500);
+            return response()->json($e->getMessage(), 500);
         }
 
         return response()->json([
@@ -87,7 +85,7 @@ class OrderController extends Controller
             $items = $this->service->updateOrderToday($request->all());
         } catch(Exception $e) {
             DB::rollback();
-            return response()->json($e->getMessage(),500);
+            return response()->json($e->getMessage(), 500);
         }
 
         DB::commit();
@@ -110,7 +108,7 @@ class OrderController extends Controller
             $response = $this->service->removeOrder($client->id);
         } catch(Exception $e) {
             DB::rollback();
-            return response()->json($e->getMessage()->message(),500);
+            return response()->json($e->getMessage()->message(), 500);
         }
 
         DB::commit();

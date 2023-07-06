@@ -6,16 +6,17 @@ use App\Repositories\ClientRepository;
 
 class ClientService
 {
-    public function __construct(ClientRepository $clientRepository)
+    public function __construct(protected ClientRepository $repository)
     {
-        $this->repository = $clientRepository;
     }
 
-    public function listClients(){
+    public function listClients()
+    {
         return $this->repository->getAllClients();
     }
 
-    public function clientForId($clientId) {
+    public function clientForId($clientId)
+    {
         return $this->repository->getClient($clientId);
     }
 
@@ -35,7 +36,8 @@ class ClientService
         return $this->repository->getById($clientId);
     }
 
-    public function removeClient($clientId) {
+    public function removeClient($clientId)
+    {
         $this->repository->deleteClient($clientId);
     }
 }
